@@ -1,0 +1,42 @@
+.basedash-sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    padding-left: 28px;
+  }
+  
+  .basedash-sidebar-list {
+    margin-top: 0;
+  }
+  
+  .basedash-sidebar-item {
+    height: 24px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  
+  .basedash-sidebar-item:last-child {
+    margin-bottom: 0;
+  }
+  
+  .basedash-sidebar-line {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 1px;
+    transition: all 0.2s ease-out;
+  }
+  
+  .basedash-sidebar-text {
+    margin-left: 40px;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 400;
+    transition: all 0.2s ease-out;
+  }
