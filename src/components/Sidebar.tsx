@@ -1,11 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 export default function Sidebar() {
+  // Core states
   const [activeSection, setActiveSection] = useState('');
   const [hoveredSection, setHoveredSection] = useState<string | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  
+  // Refs
   const sidebarRef = useRef<HTMLDivElement>(null);
+  const lastScrollPositionRef = useRef(0);
+  const isManualScrollRef = useRef(false);
   
   // Define navigation items
   const navItems = [
@@ -17,16 +22,21 @@ export default function Sidebar() {
     { id: 'features', label: 'Features' }
   ];
 
-  // Set up scroll handling and mouse position detection
+  // Get section index
+  const getSectionIndex = (id: string) => {
+    return navItems.findIndex(item => item.id === id);
+  };
+
+  // Set up hover detection and scroll behavior
   useEffect(() => {
-    // Add a transparent div for mouse detection at top of page
+    // Add a transparent div for mouse detection
     const mouseDetector = document.createElement('div');
     mouseDetector.style.position = 'absolute';
     mouseDetector.style.left = '0';
     mouseDetector.style.top = '0';
-    mouseDetector.style.width = '50px';  // Width of detection area
+    mouseDetector.style.width = '120px';
     mouseDetector.style.height = '100%';
-    mouseDetector.style.zIndex = '39';   // Just below the sidebar z-index
+    mouseDetector.style.zIndex = '39';
     mouseDetector.style.background = 'transparent';
     document.body.appendChild(mouseDetector);
     
@@ -36,7 +46,6 @@ export default function Sidebar() {
     });
     
     mouseDetector.addEventListener('mouseleave', (e) => {
-      // Only hide if not hovering the actual sidebar
       const sidebarElement = sidebarRef.current;
       if (sidebarElement && !sidebarElement.contains(e.relatedTarget as Node)) {
         if (window.scrollY < 200) {
@@ -46,34 +55,37 @@ export default function Sidebar() {
       }
     });
     
+    // Simple scroll handler that only updates active section
     const handleScroll = () => {
-      // Show sidebar when user scrolls down enough
+      // Show sidebar when scrolled down
       if (window.scrollY > 200) {
         setIsVisible(true);
         
-        // Update active section based on scroll position
-        const sections = navItems.map(item => item.id);
-        
-        for (const section of sections) {
-          const element = document.getElementById(section);
-          if (!element) continue;
-          
-          const rect = element.getBoundingClientRect();
-          
-          // Check if section is in viewport
-          if (rect.top <= 150 && rect.bottom >= 150) {
-            setActiveSection(section);
-            break;
+        // Only update active section if it's not a manual scroll
+        if (!isManualScrollRef.current) {
+          // Find which section is currently in view
+          for (const item of navItems) {
+            const element = document.getElementById(item.id);
+            if (!element) continue;
+            
+            const rect = element.getBoundingClientRect();
+            if (rect.top <= 150 && rect.bottom >= 150) {
+              setActiveSection(item.id);
+              break;
+            }
           }
         }
       } else if (!isExpanded) {
-        // Hide sidebar when scrolled to top and not expanded
         setIsVisible(false);
       }
+      
+      // Update last scroll position
+      lastScrollPositionRef.current = window.scrollY;
     };
     
     window.addEventListener('scroll', handleScroll);
-    // Call once to set initial state
+    
+    // Initial check
     handleScroll();
     
     return () => {
@@ -92,20 +104,31 @@ export default function Sidebar() {
     setIsExpanded(false);
     setHoveredSection(null);
     
-    // Hide sidebar if scrolled to top
     if (window.scrollY < 200) {
       setIsVisible(false);
     }
   };
 
-  // Handle section click
+  // Simplified section click handler
   const handleSectionClick = (id: string) => {
+    // Prevent action if already active
+    if (activeSection === id) return;
+    
+    // Set active section immediately
     setActiveSection(id);
     
-    // Scroll to the section
+    // Set flag for manual scrolling
+    isManualScrollRef.current = true;
+    
+    // Get element and scroll to it
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
+      
+      // Reset manual scroll flag after animation completes
+      setTimeout(() => {
+        isManualScrollRef.current = false;
+      }, 1000);
     }
   };
 
@@ -137,15 +160,21 @@ export default function Sidebar() {
           {navItems.map((item, index) => {
             const isActive = activeSection === item.id;
             const isHovered = hoveredSection === item.id;
+            const activeIndex = getSectionIndex(activeSection);
+            const currentIndex = index;
+            
+            // Determine if this item should show animation state
+            // We don't use a separate state for animation now - simpler approach
+            const isAnimating = false; // We're removing this for now to fix flickering
             
             return (
               <li 
                 key={item.id} 
                 style={{
-                  height: '18px',  // Further reduced height
+                  height: '16px',
                   display: 'flex',
                   alignItems: 'center',
-                  marginBottom: index === navItems.length - 1 ? '0' : '16px'  // Reduced spacing to 16px
+                  marginBottom: index === navItems.length - 1 ? '0' : '8px'
                 }}
               >
                 <button 
@@ -153,7 +182,7 @@ export default function Sidebar() {
                   onMouseEnter={() => setHoveredSection(item.id)}
                   onMouseLeave={() => setHoveredSection(null)}
                   onClick={() => handleSectionClick(item.id)}
-                  style={{ padding: 0 }}  // Remove any button padding
+                  style={{ padding: 0 }}
                 >
                   <div 
                     style={{
@@ -163,26 +192,33 @@ export default function Sidebar() {
                       transform: 'translateY(-50%)',
                       height: '1px',
                       backgroundColor: isActive ? 'rgb(255, 255, 255)' : 'rgb(102, 102, 102)',
-                      // Show ghost lines for all inactive items when sidebar is visible
                       width: isActive 
-                        ? (isExpanded || isHovered ? '24px' : '16px') 
-                        : isHovered 
-                        ? '12px' 
-                        : isVisible ? '4px' : '0px',  // The ghost line is 4px wide
-                      opacity: isActive ? 1 : isHovered ? 0.7 : 0.2,  // Lower opacity for ghost lines
-                      transition: 'all 0.2s ease-out'
+                        ? (isExpanded || isHovered ? '28px' : '24px')
+                        : isHovered
+                        ? '20px'
+                        : isVisible ? '10px' : '0px',
+                      opacity: isActive ? 1 : isHovered ? 0.8 : 0.4,
+                      transition: 'all 0.15s ease-out'
                     }}
                   ></div>
                   <span 
                     style={{
                       marginLeft: '40px',
-                      fontSize: '14px',
-                      lineHeight: '18px', // Reduced line height
+                      fontSize: '16px',
+                      lineHeight: '16px',
                       fontWeight: 400,
                       opacity: (isExpanded || isActive) ? 1 : 0,
-                      transform: (isExpanded || isActive) ? 'translateX(0px)' : 'translateX(-8px)',
-                      transition: 'all 0.2s ease-out',
-                      color: isActive ? 'rgb(255, 255, 255)' : isHovered ? 'rgba(255, 255, 255, 0.7)' : 'rgba(255, 255, 255, 0.4)'
+                      transform: isHovered
+                        ? 'translateX(4px)'
+                        : (isExpanded || isActive) 
+                        ? 'translateX(0px)' 
+                        : 'translateX(-8px)',
+                      transition: 'all 0.15s ease-out',
+                      color: isActive 
+                        ? 'rgb(255, 255, 255)' 
+                        : isHovered
+                        ? 'rgba(255, 255, 255, 0.9)'
+                        : 'rgba(255, 255, 255, 0.4)'
                     }}
                   >
                     {item.label}
