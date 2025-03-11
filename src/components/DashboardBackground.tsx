@@ -10,22 +10,20 @@ export default function DashboardBackground() {
   useEffect(() => {
     // Generate initial line data
     const generateLineData = () => {
-      const points = [];
-      for (let i = 0; i < 20; i++) {
-        points.push(100 + Math.random() * 300);
-      }
+      const points = Array(20).fill(0).map(() => 100 + Math.random() * 300);
       return points;
     };
     
     setLinePoints(generateLineData());
     
-    // Update few points periodically to create subtle animation
+    // Update points periodically for subtle animation
     const interval = setInterval(() => {
       setLinePoints(prev => {
         const newPoints = [...prev];
+        // Randomly update a few points
         for (let i = 0; i < 3; i++) {
-          const randomIndex = Math.floor(Math.random() * newPoints.length);
-          newPoints[randomIndex] = 100 + Math.random() * 300;
+          const randIndex = Math.floor(Math.random() * newPoints.length);
+          newPoints[randIndex] = 100 + Math.random() * 300;
         }
         return newPoints;
       });
@@ -46,19 +44,19 @@ export default function DashboardBackground() {
   };
   
   return (
-    <div className="dashboard-layout">
-      {/* Top Row */}
-      <div className="grid grid-cols-3 gap-6 mb-6 max-w-6xl mx-auto px-8">
+    <div className="w-full h-full">
+      {/* Dashboard Cards - Using grid layout exactly like original */}
+      <div className="grid grid-cols-3 gap-6 max-w-6xl mx-auto px-8 py-20">
         {/* Conversions - Donut Chart */}
         <div 
-          className="dashboard-card opacity-50 hover:opacity-100 transition-opacity"
+          className="bg-black/30 rounded-lg p-4 border border-gray-800/30 opacity-50 hover:opacity-100 transition-opacity cursor-pointer"
           onMouseEnter={() => setHoveredElement('conversions')}
           onMouseLeave={() => setHoveredElement(null)}
         >
           <div className="text-gray-500 text-sm mb-1">Conversions</div>
           
-          <div className="relative flex items-center justify-center h-64">
-            <svg viewBox="0 0 100 100" width="200" height="200">
+          <div className="relative flex items-center justify-center h-60">
+            <svg viewBox="0 0 100 100" width="180" height="180">
               <circle 
                 cx="50" 
                 cy="50" 
@@ -98,7 +96,7 @@ export default function DashboardBackground() {
             </svg>
             
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <div className="text-3xl font-bold text-white">4.2k</div>
+              <div className="text-3xl font-medium text-white">4.2k</div>
               <div className="text-sm text-green-500">+15%</div>
               <div className="text-xs text-gray-600">(12h)</div>
             </div>
@@ -107,12 +105,12 @@ export default function DashboardBackground() {
         
         {/* Active Users - Line Chart */}
         <div 
-          className="dashboard-card opacity-50 hover:opacity-100 transition-opacity"
+          className="bg-black/30 rounded-lg p-4 border border-gray-800/30 opacity-50 hover:opacity-100 transition-opacity cursor-pointer"
           onMouseEnter={() => setHoveredElement('activeUsers')}
           onMouseLeave={() => setHoveredElement(null)}
         >
           <div className="text-gray-500 text-sm mb-1">Active users</div>
-          <div className="text-3xl font-bold text-white mb-2">890</div>
+          <div className="text-3xl font-medium text-white mb-2">890</div>
           
           <div className="h-48">
             <svg viewBox="0 0 100 100" className="w-full h-full">
@@ -135,25 +133,25 @@ export default function DashboardBackground() {
         
         {/* Transactions - Bar Chart */}
         <div 
-          className="dashboard-card opacity-50 hover:opacity-100 transition-opacity"
+          className="bg-black/30 rounded-lg p-4 border border-gray-800/30 opacity-50 hover:opacity-100 transition-opacity cursor-pointer"
           onMouseEnter={() => setHoveredElement('transactions')}
           onMouseLeave={() => setHoveredElement(null)}
         >
           <div className="text-gray-500 text-sm mb-1">Transactions</div>
-          <div className="text-3xl font-bold text-white flex items-baseline">
+          <div className="text-3xl font-medium text-white flex items-baseline">
             120k 
             <span className="text-sm text-green-500 ml-2">+15%</span>
             <span className="text-xs text-gray-600 ml-1">(12h)</span>
           </div>
           
           <div className="h-48 mt-4 flex items-end justify-around">
-            {[0.9, 0.65, 0.85, 0.5, 0.3, 0.15].map((height, i) => (
+            {[0.9, 0.7, 0.85, 0.6, 0.45, 0.3].map((height, i) => (
               <div 
                 key={i} 
-                className="w-6 rounded-sm" 
+                className="w-6 rounded-sm transition-colors duration-300" 
                 style={{ 
                   height: `${height * 100}%`,
-                  backgroundColor: hoveredElement === 'transactions' && i < 3 ? '#ff9d80' : '#333' 
+                  backgroundColor: hoveredElement === 'transactions' && i < 3 ? '#ff9d80' : '#333'
                 }}
               ></div>
             ))}
@@ -162,31 +160,42 @@ export default function DashboardBackground() {
       </div>
       
       {/* Bottom Row */}
-      <div className="grid grid-cols-2 gap-6 max-w-5xl mx-auto px-8 mt-24">
+      <div className="grid grid-cols-2 gap-6 max-w-6xl mx-auto px-8">
         {/* User Activity */}
-        <div className="dashboard-card opacity-50">
+        <div 
+          className="bg-black/30 rounded-lg p-4 border border-gray-800/30 opacity-50 hover:opacity-100 transition-opacity cursor-pointer"
+          onMouseEnter={() => setHoveredElement('userActivity')}
+          onMouseLeave={() => setHoveredElement(null)}
+        >
           <div className="text-gray-500 text-sm mb-1">User activity</div>
-          <div className="text-3xl font-bold text-white flex items-baseline">
+          <div className="text-3xl font-medium text-white flex items-baseline">
             32.1k 
             <span className="text-sm text-green-500 ml-2">+15%</span>
             <span className="text-xs text-gray-600 ml-1">(12d)</span>
           </div>
           
-          <div className="mt-4 grid grid-cols-20 gap-1 h-12">
-            {Array(20).fill(0).map((_, i) => (
+          <div className="mt-4 grid grid-cols-12 gap-1 h-12">
+            {Array(12).fill(0).map((_, i) => (
               <div 
                 key={i}
-                className="bg-gray-800 w-full h-full"
-                style={{ opacity: Math.random() > 0.5 ? 0.8 : 0.3 }}
+                className="bg-gray-800 w-full h-full transition-colors duration-300"
+                style={{ 
+                  opacity: Math.random() > 0.5 ? 0.8 : 0.3,
+                  backgroundColor: hoveredElement === 'userActivity' && i < 6 ? '#80a0ff' : '#333'
+                }}
               ></div>
             ))}
           </div>
         </div>
         
         {/* Sign ups */}
-        <div className="dashboard-card opacity-50">
+        <div 
+          className="bg-black/30 rounded-lg p-4 border border-gray-800/30 opacity-50 hover:opacity-100 transition-opacity cursor-pointer"
+          onMouseEnter={() => setHoveredElement('signUps')}
+          onMouseLeave={() => setHoveredElement(null)}
+        >
           <div className="text-gray-500 text-sm mb-1">Sign ups</div>
-          <div className="text-3xl font-bold text-white flex items-baseline">
+          <div className="text-3xl font-medium text-white flex items-baseline">
             9.8k 
             <span className="text-sm text-green-500 ml-2">+9%</span>
             <span className="text-xs text-gray-600 ml-1">(7d)</span>
