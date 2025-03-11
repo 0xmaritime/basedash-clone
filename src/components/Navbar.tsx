@@ -3,8 +3,9 @@ import { useState } from 'react';
 
 export default function Navbar() {
   return (
-    <header className="fixed w-full top-0 z-50 bg-bd-black bg-opacity-80 backdrop-blur-sm border-b border-gray-800/50">
-      <div className="container mx-auto px-6 py-4 flex justify-between items-center">
+    <header className="fixed w-full top-0 z-50">
+      <div className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/50 to-transparent" />
+      <div className="relative container mx-auto px-6 py-4 flex justify-between items-center">
         <Link href="/" className="flex items-center">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 relative">
