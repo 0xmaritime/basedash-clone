@@ -5,7 +5,7 @@ export default function TableExplorer() {
     <section className="py-20 bg-bd-black">
       <div className="container mx-auto px-6">
         <div className="text-sm text-bd-purple mb-2">Table explorer</div>
-        <h2 className="text-4xl md:text-5xl font-bold mb-6 text-bd-text">Explore your database like a spreadsheet</h2>
+        <h2 className="text-4xl md:text-5xl font-extralight mb-6 text-bd-text">Explore your database like a spreadsheet</h2>
         <p className="text-xl text-bd-text-secondary max-w-2xl mb-12">
           Basedash empowers anyone on the team to explore your database with the familiarity of a spreadsheet.
         </p>

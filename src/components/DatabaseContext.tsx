@@ -2,12 +2,11 @@ import React from 'react';
 
 export default function DatabaseContext() {
   return (
-    <section className="py-20 bg-black" id="context">
+    <section className="py-20 bg-bd-black">
       <div className="container mx-auto px-6">
-        <h2 className="text-5xl md:text-6xl font-normal text-center mb-4 text-white">An AI that knows your DB</h2>
-        <p className="text-center text-xl text-gray-300 max-w-2xl mx-auto mb-16">
-          Basedash understands your data so you don't have to. Even the
-          most complicated query is just a chat away.
+        <h2 className="text-4xl md:text-5xl font-extralight text-center mb-4 text-bd-text">Context is Everything</h2>
+        <p className="text-center text-xl text-bd-text-secondary max-w-2xl mx-auto mb-12 font-extralight">
+          Basedash understands your database schema, so you can ask questions about your data in plain English.
         </p>
         
         <div className="relative max-w-5xl mx-auto">

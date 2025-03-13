@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 export default function ChatToChart() {
   const [chatStep, setChatStep] = useState(1);
   
-  // Function to advance to the next chat step
   const nextStep = () => {
     setChatStep(prev => Math.min(prev + 1, 3));
   };
@@ -11,8 +10,8 @@ export default function ChatToChart() {
   return (
     <section className="py-20 bg-bd-black" id="chat-to-chart">
       <div className="container mx-auto px-6">
-        <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 text-bd-text">Chat → Chart</h2>
-        <p className="text-center text-xl text-bd-text-secondary max-w-2xl mx-auto mb-12">
+        <h2 className="text-4xl md:text-5xl font-extralight text-center mb-4 text-bd-text">Chat → Chart</h2>
+        <p className="text-center text-xl text-bd-text-secondary max-w-2xl mx-auto mb-12 font-extralight">
           With Basedash, everyone can create rich data visualizations.
           Just chat, and let the AI create the right chart, with the right data in seconds.
         </p>

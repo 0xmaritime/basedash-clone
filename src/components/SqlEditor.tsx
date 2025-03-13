@@ -5,7 +5,7 @@ export default function SqlEditor() {
     <section className="py-20 bg-bd-black" id="features">
       <div className="container mx-auto px-6">
         <div className="text-sm text-bd-purple mb-2">Query editor</div>
-        <h2 className="text-4xl md:text-5xl font-bold mb-6 text-bd-text">Powerful SQL editor</h2>
+        <h2 className="text-4xl md:text-5xl font-extralight mb-6 text-bd-text">Powerful SQL editor</h2>
         <p className="text-xl text-bd-text-secondary max-w-2xl mb-12">
           Built on the same framework as VS Code, we've made the best possible multiplayer SQL editor for teammates who want to write their own queries. Auto-formatting, variables, version history, and best-in-class autocompletion.
         </p>

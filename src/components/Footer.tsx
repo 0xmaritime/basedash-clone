@@ -6,14 +6,14 @@ export default function Footer() {
     <footer className="py-20 bg-bd-black">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-bd-text">It's time for better charts</h2>
+          <h2 className="text-4xl md:text-5xl font-extralight mb-6 text-bd-text">It's time for better charts</h2>
           <Link href="/signup" className="inline-block mt-4 bg-white text-black px-6 py-2 rounded-md font-medium hover:bg-gray-200 transition-colors">
             Sign up
           </Link>
         </div>
         
         <div className="text-center mb-16">
-          <h3 className="text-xl font-bold mb-6 text-bd-text">Built on Strong Foundations</h3>
+          <h3 className="text-xl font-extralight mb-6 text-bd-text">Built on Strong Foundations</h3>
           <div className="flex flex-wrap justify-center gap-4 mb-12">
             <div className="inline-flex items-center bg-bd-black border border-bd-border rounded-full px-4 py-1">
               <div className="flex items-center gap-1">
@@ -36,7 +36,7 @@ export default function Footer() {
             </div>
           </div>
           
-          <h3 className="text-xl font-bold mb-6 text-bd-text">Backed by the best</h3>
+          <h3 className="text-center text-xl font-extralight mb-6 text-bd-text">Backed by the best</h3>
           <div className="flex flex-wrap justify-center gap-10 mb-16">
             <div className="text-2xl font-bold text-bd-text opacity-80">matrix</div>
             <div className="text-2xl font-bold text-bd-pink">Form</div>

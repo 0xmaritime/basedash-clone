@@ -5,12 +5,12 @@ export default function Pricing() {
     <section className="py-20 bg-bd-black" id="pricing">
       <div className="container mx-auto px-6 text-center">
         <div className="mb-6">
-          <h3 className="text-xl text-bd-text-secondary">Pricing</h3>
+          <h3 className="text-xl font-extralight text-bd-text-secondary">Pricing</h3>
         </div>
         
-        <h2 className="text-2xl font-semibold mb-6 text-bd-text">14 day free trial</h2>
+        <h2 className="text-2xl font-extralight mb-6 text-bd-text">14 day free trial</h2>
         
-        <div className="text-5xl md:text-6xl font-bold mb-6 text-bd-text">$300/mo</div>
+        <div className="text-5xl md:text-6xl font-extralight mb-6 text-bd-text">$300/mo</div>
         
         <p className="text-xl text-bd-text-secondary mb-12">
           Unlimited teammates, charts, chats, and dashboards.
